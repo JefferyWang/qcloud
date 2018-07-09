@@ -10,7 +10,25 @@
 
 ## 快速使用
 
+``` go
+import (
+	"fmt"
+	"github.com/JefferyWang/qcloud/captcha"
+)
 
+func main() {
+	ticket := "****"
+	randStr := "****"
+	userIP := "*.*.*.*"
+
+	ret, level, err := captcha.New("your appid", "your secret key").Verify(ticket, randStr, userIP)
+	if err != nil {
+		fmt.Println("[Error]: ", err)
+		return
+	}
+	fmt.Println(ret, level, err)
+}
+```
 
 
 
