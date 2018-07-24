@@ -6,7 +6,7 @@ import (
 )
 
 // DoGet 发送get请求
-func DoGet(urlStr string, params map[string]string) (body []byte, err error) {
+func DoGet(urlStr string, params map[string]string, headers map[string]string) (body []byte, err error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", urlStr, nil)
 	if err != nil {
@@ -19,6 +19,14 @@ func DoGet(urlStr string, params map[string]string) (body []byte, err error) {
 		query.Set(key, val)
 	}
 	req.URL.RawQuery = query.Encode()
+
+	// 添加header
+	for k, v := range headers {
+		if k == "Host" {
+			req.Host = v
+		}
+		req.Header.Set(k, v)
+	}
 
 	// 发起请求
 	resp, err := client.Do(req)

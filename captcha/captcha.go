@@ -40,7 +40,7 @@ func (conf *Conf) Verify(ticket string, randStr string, userIP string) (ret bool
 		"Ticket":       ticket,
 		"Randstr":      randStr,
 		"UserIP":       userIP,
-	})
+	}, map[string]string{})
 	if err != nil {
 		return
 	}
