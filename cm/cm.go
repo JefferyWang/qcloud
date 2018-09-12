@@ -2,11 +2,9 @@ package cm
 
 import (
 	"bytes"
-	"math/rand"
 	"sort"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/JefferyWang/qcloud/capi"
 	"github.com/JefferyWang/qcloud/util"
@@ -18,12 +16,6 @@ const monitorBaseURL = "https://monitor.api.qcloud.com/v2/index.php"
 // CM 云监控
 type CM struct {
 	capi.Conf // 腾讯云api配置
-}
-
-var randSeed *rand.Rand
-
-func init() {
-	randSeed = rand.New(rand.NewSource(time.Now().UnixNano()))
 }
 
 // New 实例化监控
@@ -100,12 +92,10 @@ func (cmObj *CM) GetCvmMonitorData(serverID string, metric string, period int, s
 }
 
 func (cmObj *CM) getCommonParams() map[string]string {
-	timestamp := time.Now().Unix()
-	timestampStr := strconv.FormatInt(timestamp, 10)
 	return map[string]string{
 		"Action":    "GetMonitorData",
-		"Timestamp": timestampStr,
-		"Nonce":     strconv.FormatUint(randSeed.Uint64(), 10),
+		"Timestamp": util.GetCurTimeStampStr(),
+		"Nonce":     strconv.FormatUint(util.RandSeed.Uint64(), 10),
 		"SecretId":  cmObj.SecretID,
 		"SecretKey": cmObj.SecretKey,
 	}
